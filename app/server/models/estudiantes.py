@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr, Field
 
-#score: float = Field(..., gt=0.0, le=20.0)
+
 
 class EstudianteSchema(BaseModel):
     est_id: str = Field(...)

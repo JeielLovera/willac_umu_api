@@ -1,6 +1,12 @@
 # import required modules
 import pandas as pd
 import numpy as np
+import os
+
+#paths
+APP_FOLDER = os.path.dirname(__file__)
+FILES_FOLDER = os.path.dirname(APP_FOLDER)
+FILES_FOLDER = os.path.join(FILES_FOLDER, "files")
 
 # assignment of the five 'areas' and the possible courses
 courses = ["MATEMATICA", "COMUNICACION", "PFRH", "CIENCIAS SOCIALES", "CIENCIA TECNOLOGIA Y AMBIENTE"]
@@ -16,7 +22,7 @@ matrixScore  = []
 
 # add the data in the 'area'
 def AppendInArea(course, area):
-    temp = list(data[course].iloc[:10])
+    temp = list(data[course].iloc[:])
     area.append(temp)
  
 # calculate the average of an 'area'
@@ -32,16 +38,16 @@ def AverageArea(area):
     return arrayAverage 
 
 # create file to export
-def CreateFile(matrix, courses):    
+def CreateFile(matrix, courses, time):    
     file = pd.DataFrame(matrix, columns = courses)
-    file.to_csv(r'.\app\server\code\standarfile.csv', index = False, header = True)
-
+    flname = "\{time}standarfile.csv".format(time=time)
+    file.to_csv(FILES_FOLDER+flname, index = False, header = True)
 
 # standardize student data
-def Standardization(file):
+def Standardization(filename, time):
     # get the data and courses
     global data
-    data = pd.read_csv(file)
+    data = pd.read_csv(filename)
     datacourses = [ c for c in data]
 
     for course in datacourses:
@@ -78,11 +84,4 @@ def Standardization(file):
         courses.append("UNIV B")
     
     matrix = np.array(matrixScore).T
-    #CreateFile(matrix, courses)
-    file = pd.DataFrame(matrix, columns = courses)
-    return file
-
-
-
-"""if __name__ == "__main__":
-    Standardization('./app/server/code/Datasets_Largo.csv')"""
+    CreateFile(matrix, courses, time)
