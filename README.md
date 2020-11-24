@@ -31,7 +31,7 @@ Teniendo ya el venv activado y las extensiones instaladas desde el requirements.
 
     (venv)$ python app/main.py
 
-Para ver la documentacion y prueba de los endpoints debe ir a la siguiente url
+Para ver la documentación y prueba de los endpoints debe ir a la siguiente url
 
     http://localhost:8000/docs
     
