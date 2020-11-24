@@ -20,7 +20,7 @@ Cambiar el interprete por el venv
     $ source venv/bin/activate
     $ export PYTHONPATH=$PWD
 
-Instalar las extenxiones necesarias para el funcionamiento del api desde el archivo requirements.txt
+Instalar las extensiones necesarias para el funcionamiento del api desde el archivo requirements.txt
 
     (venv)$ pip install -r requirements.txt
 
@@ -32,9 +32,9 @@ Teniendo ya el venv activado y las extensiones instaladas desde el requirements.
 
 ## Archivos core
 #### Data_Standarization.py
-Contiene todas las funciones para estandarizar el archivo de los datos de entrenamiento. El resultado es que los datos contienen los datos de entrada con los cinco cursos de Matemática, Comunicación, Persona Familia y Relaciones Humanas, Ciencias Sociales y Ciencia y Ambiente.
+Contiene todas las funciones para estandarizar los datos de un archivo. El resultado es un dataset que contiene únicamente 5 áreas de evaluación: Matemática, Comunicación, Persona Familia y Relaciones Humanas, Ciencias Sociales, y Ciencia y Ambiente.
 #### Multilayer_Perceptron_Trainer.py
-### Willaq_Umu_Prediction.py
+#### Willaq_Umu_Prediction.py
 ## Estructura de archivos
 ```
 willac_umu_api
