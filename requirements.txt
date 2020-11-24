@@ -7,4 +7,3 @@ pandas
 python-multipart
 pyrebase
 matplotlib
-sklearn
