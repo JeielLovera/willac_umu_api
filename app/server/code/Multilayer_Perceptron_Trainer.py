@@ -5,6 +5,7 @@ import pandas as pd
 import os
 from sklearn.preprocessing import MinMaxScaler
 
+#paths
 APP_FOLDER = os.path.dirname(__file__)
 FILES_FOLDER = os.path.dirname(APP_FOLDER)
 FILES_FOLDER = os.path.join(FILES_FOLDER, "files")
@@ -136,7 +137,6 @@ def Multilayer_Perceptron_Trainer(time):
         # in the last epoch calculate the model error
         if(i == epochs-1):
             model_error = np.sum(error_history)/(epochs)
-            print("El error del modelo es", model_error)
     
     # plot error
     plt.plot(steps, error_history, label='Error History')
@@ -159,7 +159,3 @@ def Multilayer_Perceptron_Trainer(time):
 
     return (hw, hb, ow, ob)
 
-"""if __name__ == "__main__":
-    time = "125455"
-    hw, hb, ow, ob = Multilayer_Perceptron_Trainer(time)
-    print(hw, hb, ow, ob)"""

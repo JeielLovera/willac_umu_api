@@ -32,16 +32,6 @@ def init_globals(time, hw, hb, ow, ob):
     file_columns = ["MATEMATICA", "COMUNICACION", "PFRH", "CIENCIAS SOCIALES", "CIENCIA TECNOLOGIA Y AMBIENTE", "UNIV A", "UNIV B"]
 
     # get weights and bias
-    """hidden_weights = [[18.559973393217064, 20.814059984135657, 17.61786519642371], 
-                    [18.220043981622013, 21.70416985697831, 17.762354424426036], 
-                    [18.52629260163194, 21.609404376910376, 19.09913891993568], 
-                    [20.605168994266748, 22.0015356443664, 17.714787497944762], 
-                    [20.734617945304183, 22.283033863866123, 17.747173494154346]] 
-    hidden_bias = [[-32.998345353689224, -32.71893708119303, -30.978028990682105]] 
-    output_weights = [[-0.05144790134264302, 0.30548578656117353], 
-                    [0.3652853211862023, 0.003255147367954442], 
-                    [-0.23342630287255503, -0.013830922146140642]] 
-    output_bias = [[-5.457835365043566, -5.125684230385598]]"""
     hidden_weights = hw
     hidden_bias = hb
     output_weights = ow
@@ -75,4 +65,3 @@ def Predict_Inputs(time, hw, hb, ow, ob):
     file_matrix = np.append(courses_grades, np.round(predicted_values), 1)
     create_file(file_matrix, time)
 
-#predict_inputs()

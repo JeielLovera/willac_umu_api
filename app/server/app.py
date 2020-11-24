@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="WILLAC UMU REST API")
 
-app.include_router(EstudiantesRouter, tags=["Estudiantes"], prefix="/estudiantes")
 app.include_router(TrainingRouter, tags=["Training"], prefix="/training")
 app.include_router(PredictRouter, tags=["Predict"], prefix="/predict")
 
