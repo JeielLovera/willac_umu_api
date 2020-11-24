@@ -30,6 +30,10 @@ Instalar las extensiones necesarias para el funcionamiento del api desde el arch
 Teniendo ya el venv activado y las extensiones instaladas desde el requirements.txt, ya se puede iniciar la aplicación.
 
     (venv)$ python app/main.py
+
+Para ver la documentacion y prueba de los endpoints debe ir a la siguiente url
+
+    http://localhost:8000/docs
     
 
 ## Archivos core
