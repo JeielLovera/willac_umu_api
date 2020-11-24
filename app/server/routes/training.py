@@ -32,6 +32,7 @@ firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
 router = APIRouter()
 
+#download the file to training data
 @router.get("/{filename}")
 async def getDataToTraining(filename: str):
     today = datetime.today()
@@ -41,6 +42,7 @@ async def getDataToTraining(filename: str):
     storage.child('files/'+filename).download(FILES_FOLDER+filepath)
     return {"filename": str(current)+"data_training.csv"}
 
+#save the weights and bias to MongoDB, and upload the img of errors after training
 @router.post("/{filename}")
 async def postWeightsBias(filename: str):
     today = datetime.today()

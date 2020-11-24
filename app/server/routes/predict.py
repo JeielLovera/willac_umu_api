@@ -35,6 +35,7 @@ firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
 router = APIRouter()
 
+#download the file to predict data
 @router.get("/{filename}")
 async def getDataToPredict(filename: str):
     today = datetime.today()
@@ -44,6 +45,7 @@ async def getDataToPredict(filename: str):
     storage.child('files/'+filename).download(FILES_FOLDER+filepath)
     return { "filename": str(current)+"data_predict.csv"}
 
+#upload the file after prediction
 @router.post("/{id}/{filename}")
 async def postDataPredicted(id: str, filename: str):
     today = datetime.today()

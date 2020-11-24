@@ -7,21 +7,23 @@ API Rest de Willac Umu, donde se hace uso de algoritmos de machine learning para
 - Python 3~
 
 #### Instalación
-Abrir la terminar y clonar los archivos en la carpeta deseada.
+Abrir la terminal y clonar los archivos en la carpeta deseada.
 
     $ git clone https://github.com/JeielLovera/willac_umu_api.git
 
-Moverse a la carpeta donde se clonaron los archivos e instalar un virtual enviroment de python.
+Moverse a la carpeta donde se clonaron los archivos e instalar un virtual environment de python.
 
+    $ cd willac_umu_api
     $ python -m venv venv
 
-Cambiar el interprete por el venv.
+Activar el virtual environment.
 
-    $ source venv/bin/activate
-    $ export PYTHONPATH=$PWD
+    $ cd venv/Scripts
+    $ activate
 
 Instalar las extensiones necesarias para el funcionamiento del api desde el archivo requirements.txt
 
+    cd ../..
     (venv)$ pip install -r requirements.txt
 
 #### Uso del API

@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from server.routes.estudiantes import router as EstudiantesRouter
 from server.routes.training import router as TrainingRouter
 from server.routes.predict import router as PredictRouter
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,7 +18,7 @@ app.add_middleware(
 
 @app.get("/", tags=["Root"])
 async def read_root():
-    return {"message": "Bienvenidos al himalaya!!!"}
+    return {"message": "Willac Umu Api is running"}
 
 
 

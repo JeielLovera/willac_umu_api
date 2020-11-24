@@ -2,8 +2,6 @@
 import motor.motor_asyncio
 from bson.objectid import ObjectId
 
-
-
 MONGO_DETAILS = "mongodb+srv://adminzuricata:teamzuricatas@willacumucluster.1tzxq.mongodb.net/willacumuDB?retryWrites=true&w=majority"
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
