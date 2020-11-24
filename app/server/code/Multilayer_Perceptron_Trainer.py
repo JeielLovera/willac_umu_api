@@ -2,9 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 import os
-
+from sklearn.preprocessing import MinMaxScaler
 
 APP_FOLDER = os.path.dirname(__file__)
 FILES_FOLDER = os.path.dirname(APP_FOLDER)
@@ -23,7 +22,12 @@ def frontpropagation(inputs, hidden_weights, hidden_bias, output_weights, output
     return output_layer_output, hidden_layer_output
 
 # function to backpropagate the error and train the neural network
-def backpropagation(expected_output, output_layer_output, output_weights, output_bias, hidden_layer_output, hidden_weights, hidden_bias, paths):
+def backpropagation(inputs, expected_output, output_layer_output, output_weights, output_bias, hidden_layer_output, hidden_weights, hidden_bias, paths):
+    # do not propagate -1 values (did not took the exam)
+    for i in range(len(expected_output)):
+        for j in range(len(expected_output[i])):
+            if(expected_output[i][j] == -1):
+                output_layer_output[i][j] == -1
     # calculate the ouput layer's predicted delta
     output_predicted_error = expected_output - output_layer_output
     output_predicted_d = sidgmoid_derivative(output_layer_output)*output_predicted_error
@@ -39,26 +43,18 @@ def backpropagation(expected_output, output_layer_output, output_weights, output
     hidden_bias += np.sum(hidden_predicted_d)*lr/paths
 
 # function to calculate the instant error
-def calculateError(expected_output, output_layer_output, error_history, paths):
+def calculateError(expected_output, output_layer_output, error_history):
+    # do not consider -1 values (did not took the exam)
+    valid_values = len(expected_output[0])
+    for i in range(len(expected_output[0])):
+        if(expected_output[0][i] == -1):
+            output_layer_output[0][i] == -1
+            valid_values -= 1
     # calculate the instant error 
     expected_dif = (expected_output - output_layer_output)
     dif_cuadrada = np.power(expected_dif, 2)
-    inst_error = np.sum(dif_cuadrada.T, 1)/paths
-    for i in range(len(error_history)):
-        error_history[i].append(inst_error[i])
-    return inst_error
-
-# function to print the results of an epoch
-def printResults(i, hidden_weights, output_weights, hidden_bias, output_bias, inst_error):
-    # print the results
-    print()
-    print("Epoch", i)
-    print('Pesos de la capa oculta', hidden_weights)
-    print('Pesos de la capa salida', output_weights)
-    print('Bias de la capa oculta', hidden_bias)
-    print('Bias de la capa salida', output_bias)
-    print('El error instantaneo', inst_error)
-    print()
+    inst_error = np.sum(dif_cuadrada.T)/valid_values
+    error_history.append(inst_error)
 
 # function to get the sigmoid value of an array
 def sigmoid(x):
@@ -68,21 +64,25 @@ def sigmoid(x):
 def sidgmoid_derivative(x):
     return x*(1+x)
 
-# inputs
-# get scaled inputs and excepted outputs
-# error history
-# random weights
-# random bias
+def learning_stage(learning_data, learning_expected_output, hidden_weights, hidden_bias, output_weights, output_bias):
+    # define number of elements in the learning data array
+    learning_elements = len(learning_data)
 
-"""print('Inputs', inputs)
-print('Outputs', expected_output)
-print('Pesos de la capa oculta', hidden_weights)
-print('Pesos de la capa salida', output_weights)
-print('Bias de la capa oculta', hidden_bias)
-print('Bias de la capa salida', output_bias)
-"""
-def TrainingNeuralNetwork(time):
-    global data, scaler, x, y, inputs, expected_output, epochs, lr
+    # frontpropagation
+    output_layer_output, hidden_layer_output = frontpropagation(learning_data, hidden_weights, hidden_bias, output_weights, output_bias)
+
+    # backpropagation
+    backpropagation(learning_data, learning_expected_output, output_layer_output, output_weights, output_bias, hidden_layer_output, hidden_weights, hidden_bias, learning_elements)
+
+def testing_stage(testing_data, testing_expected_output, error_history):
+    # frontpropagation
+    output_layer_output, _ = frontpropagation(testing_data, hidden_weights, hidden_bias, output_weights, output_bias)
+
+    # calculate epoch error
+    calculateError(testing_expected_output, output_layer_output, error_history)
+
+def init_globals(time):
+    global data, scaler, x, y, inputs, expected_output, epochs, lr, model_error
     global input_layer_neurons, hidden_layer_neurons, output_layer_neurons, steps, paths
     global error_history, hidden_weights, output_weights, hidden_bias, output_bias
 
@@ -95,54 +95,51 @@ def TrainingNeuralNetwork(time):
     x = scaler.fit_transform(data.iloc[:, :-2].values)
     y = data.iloc[:, -2:].values
 
+    # define inputs and expected outputs
     inputs = np.array(x)
     expected_output = np.array(y)
 
-    epochs = 10000
+    # neural network training attributes
+    paths = len(inputs)
+    n_multiplicity = 5
+    epochs = paths*n_multiplicity
     lr = 0.25
     input_layer_neurons, hidden_layer_neurons, output_layer_neurons = 5, 3, 2
     steps = range(epochs)
-    paths = len(inputs)
     
     # error history
-    error_history = [[], []]
+    error_history = []
+    model_error = 0
 
     # random weights
-    hidden_weights = np.random.uniform(size=(input_layer_neurons, hidden_layer_neurons))
-    output_weights = np.random.uniform(size=(hidden_layer_neurons, output_layer_neurons))
-
+    output_weights = np.random.uniform(0, 1, size=(hidden_layer_neurons, output_layer_neurons))
+    hidden_weights = np.random.uniform(18, 21, size=(input_layer_neurons, hidden_layer_neurons))
     # random bias
-    hidden_bias = np.random.uniform(size=(1, hidden_layer_neurons))
-    output_bias = np.random.uniform(size=(1, output_layer_neurons))
+    hidden_bias = np.random.uniform(-31, -28, size=(1, hidden_layer_neurons))
+    output_bias = np.random.uniform(-5, -4, size=(1, output_layer_neurons))
 
-    #training
+def Multilayer_Perceptron_Trainer(time):
+    init_globals(time)
     for i in range(epochs):
+        # divide learning data and testing data
+        testing_data = np.array([inputs[i%paths]])
+        learning_data = np.delete(inputs, i%paths, 0)
+        testing_expected_output = np.array([expected_output[i%paths]])
+        learning_expected_output = np.delete(expected_output, i%paths, 0)
         
-        # aprendizaje:
-        # frontpropagation
-        output_layer_output, hidden_layer_output = frontpropagation(inputs, hidden_weights, hidden_bias, output_weights, output_bias)
-
-        # backpropagation
-        backpropagation(expected_output, output_layer_output, output_weights, output_bias, hidden_layer_output, hidden_weights, hidden_bias, paths)
+        # learning stage
+        learning_stage(learning_data, learning_expected_output, hidden_weights, hidden_bias, output_weights, output_bias)
         
+        # testing stage
+        testing_stage(testing_data, testing_expected_output, error_history)
 
-        # calculate epoch error
-        inst_error = calculateError(expected_output, output_layer_output, error_history, paths)
-        
-        # print results every 100 epochs
-        """if(i % 100 == 0):
-            printResults(i, hidden_weights, output_weights, hidden_bias, output_bias, inst_error)"""
-
-        # stop condition
-        if(inst_error[0] < 0.01 and inst_error[1] < 0.01 or i == epochs - 1):
-            #printResults(i, hidden_weights, output_weights, hidden_bias, output_bias, inst_error)
-            steps = range(i+1)
-            #print("Última época", i)
-            break
-
+        # in the last epoch calculate the model error
+        if(i == epochs-1):
+            model_error = np.sum(error_history)/(epochs)
+            print("El error del modelo es", model_error)
+    
     # plot error
-    plt.plot(steps, error_history[0], label='Error Univ A')
-    plt.plot(steps, error_history[1], label='Error Univ B')
+    plt.plot(steps, error_history, label='Error History')
 
     plt.xlabel('Time (steps)')
     plt.ylabel('Error')
@@ -156,23 +153,13 @@ def TrainingNeuralNetwork(time):
     hb = [[x for x in y] for y in hidden_bias]
     ow = [[x for x in y] for y in output_weights]
     ob = [[x for x in y] for y in output_bias]
-    return (hw, hb, ow, ob)
-    #plt.show()
 
-# neural network testing
-"""TrainingNeuralNetwork('/standarfile.csv')
-for i in range(4):
-    x1, x2, x3, x4, x5 = input().split(" ")
-    inputs_to_predict = np.array([[float(x1), float(x2), float(x3), float(x4), float(x5)]])
-    result, _ = frontpropagation(inputs_to_predict, hidden_weights, hidden_bias, output_weights, output_bias)
-    print(result)"""
+    plt.clf()
+    plt.cla()
+
+    return (hw, hb, ow, ob)
 
 """if __name__ == "__main__":
-    TrainingNeuralNetwork('/standarfile.csv')
-    arr = [[x for x in y] for y in hidden_weights]
-    print(arr)
-    print(hidden_bias)
-    print()
-    print(output_weights)
-    print()
-    print(output_bias)"""
+    time = "125455"
+    hw, hb, ow, ob = Multilayer_Perceptron_Trainer(time)
+    print(hw, hb, ow, ob)"""

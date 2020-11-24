@@ -8,9 +8,6 @@ APP_FOLDER = os.path.dirname(__file__)
 FILES_FOLDER = os.path.dirname(APP_FOLDER)
 FILES_FOLDER = os.path.join(FILES_FOLDER, "files")
 
-# assignment of the five 'areas' and the possible courses
-courses = ["MATEMATICA", "COMUNICACION", "PFRH", "CIENCIAS SOCIALES", "CIENCIA TECNOLOGIA Y AMBIENTE"]
-
 # initialization of the arrays of each 'area'   
 matematica   = []
 comunicacion = []
@@ -46,9 +43,10 @@ def CreateFile(matrix, courses, time):
 # standardize student data
 def Standardization(filename, time):
     # get the data and courses
-    global data
+    global data, courses
     data = pd.read_csv(filename)
     datacourses = [ c for c in data]
+    courses = ["MATEMATICA", "COMUNICACION", "PFRH", "CIENCIAS SOCIALES", "CIENCIA TECNOLOGIA Y AMBIENTE"]
 
     for course in datacourses:
         if(course == "MATEMATICA" or course == "RAZ MATEMATICO" or course == "ARITMETICA" or course == "GEOMETRIA" or course == "ALGEBRA" or course == "TRIGONOMETRIA"):
@@ -82,6 +80,9 @@ def Standardization(filename, time):
         matrixScore.append(predicted[1])
         courses.append("UNIV A")
         courses.append("UNIV B")
+
     
     matrix = np.array(matrixScore).T
     CreateFile(matrix, courses, time)
+    courses.clear()
+    matrixScore.clear()

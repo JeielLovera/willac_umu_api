@@ -33,19 +33,21 @@ storage = firebase.storage()
 router = APIRouter()
 
 @router.get("/{filename}")
-async def getDataTraining(filename: str):
+async def getDataToTraining(filename: str):
+    today = datetime.today()
     now = datetime.now()
-    current = now.strftime("%H%M%S")
-    fl = "\{time}datacloud.csv".format(time=current)
-    storage.child('files/'+filename).download(FILES_FOLDER+fl)
-    return {"filename": str(current)+'datacloud.csv'}
+    current = today.strftime("%d%m%y") + now.strftime("%H%M%S")
+    filepath = "\{time}data_training.csv".format(time=current)
+    storage.child('files/'+filename).download(FILES_FOLDER+filepath)
+    return {"filename": str(current)+"data_training.csv"}
 
 @router.post("/{filename}")
 async def postWeightsBias(filename: str):
+    today = datetime.today()
     now = datetime.now()
-    current = now.strftime("%H%M%S")
+    current = today.strftime("%d%m%y") + now.strftime("%H%M%S")
     Standardization(FILES_FOLDER+"/"+filename, current)
-    (hw, hb, ow, ob) = TrainingNeuralNetwork(current)
+    (hw, hb, ow, ob) = Multilayer_Perceptron_Trainer(current)
     jsonStr = {
         "hidden_weights": hw,
         "hidden_bias": hb,
@@ -54,7 +56,7 @@ async def postWeightsBias(filename: str):
     }
     response = await save_weightsbias(jsonStr)
     imgfile = "/{time}error.png".format(time=current)
-    storage.child('files'+imgfile).put(FILES_FOLDER+imgfile)
-    return response
+    storage.child("files"+imgfile).put(FILES_FOLDER+imgfile)
+    return { "id_weightsbias": response["_id"], "img_error": str(current)+"error.png"}
 
 
