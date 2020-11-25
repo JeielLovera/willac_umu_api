@@ -26,6 +26,12 @@ Instalar las extensiones necesarias para el funcionamiento del api desde el arch
     cd ../..
     (venv)$ pip install -r requirements.txt
 
+Si tuvo algún error durante la instalación, realice los siguientes pasos:
+- Abra el Editor de Registro (Registry Editor) con el buscador de Windows.
+- Acceda a la ruta access the 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem'
+- Cambie el valor de la variable 'LongPathsEnabled' a 1
+- Vuelva a realizar los pasos desde la instalación del virtual environment.
+
 #### Uso del API
 Teniendo ya el venv activado y las extensiones instaladas desde el requirements.txt, ya se puede iniciar la aplicación.
 
