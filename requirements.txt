@@ -5,6 +5,6 @@ motor==2.2.0
 python-decouple==3.3
 pandas
 python-multipart
-pyrebase
 matplotlib
 sklearn
+pyrebase4

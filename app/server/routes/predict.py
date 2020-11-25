@@ -42,7 +42,7 @@ async def getDataToPredict(filename: str):
     now = datetime.now()
     current = today.strftime("%d%m%y") + now.strftime("%H%M%S")
     filepath = "\{time}data_predict.csv".format(time=current)
-    storage.child('files/'+filename).download(FILES_FOLDER+filepath)
+    storage.child('files/'+filename).download('r', FILES_FOLDER+filepath)
     return { "filename": str(current)+"data_predict.csv"}
 
 #upload the file after prediction

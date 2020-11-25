@@ -39,7 +39,7 @@ async def getDataToTraining(filename: str):
     now = datetime.now()
     current = today.strftime("%d%m%y") + now.strftime("%H%M%S")
     filepath = "\{time}data_training.csv".format(time=current)
-    storage.child('files/'+filename).download(FILES_FOLDER+filepath)
+    storage.child('files/'+filename).download('r', FILES_FOLDER+filepath)
     return {"filename": str(current)+"data_training.csv"}
 
 #save the weights and bias to MongoDB, and upload the img of errors after training
