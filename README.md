@@ -7,6 +7,8 @@ API Rest de Willac Umu, donde se hace uso de algoritmos de machine learning para
 - Python 3~
 
 #### Instalación
+Para toda la instalación usar el Command Prompt de Windows.
+
 Abrir la terminal y clonar los archivos en la carpeta deseada.
 
     $ git clone https://github.com/JeielLovera/willac_umu_api.git
