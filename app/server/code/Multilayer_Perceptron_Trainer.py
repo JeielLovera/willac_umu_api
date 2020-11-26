@@ -28,7 +28,7 @@ def backpropagation(inputs, expected_output, output_layer_output, output_weights
     for i in range(len(expected_output)):
         for j in range(len(expected_output[i])):
             if(expected_output[i][j] == -1):
-                output_layer_output[i][j] == -1
+                output_layer_output[i][j] = -1
     # calculate the ouput layer's predicted delta
     output_predicted_error = expected_output - output_layer_output
     output_predicted_d = sidgmoid_derivative(output_layer_output)*output_predicted_error
@@ -49,7 +49,7 @@ def calculateError(expected_output, output_layer_output, error_history):
     valid_values = len(expected_output[0])
     for i in range(len(expected_output[0])):
         if(expected_output[0][i] == -1):
-            output_layer_output[0][i] == -1
+            output_layer_output[0][i] = -1
             valid_values -= 1
     # calculate the instant error 
     expected_dif = (expected_output - output_layer_output)

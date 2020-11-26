@@ -30,8 +30,9 @@ Instalar las extensiones necesarias para el funcionamiento del api desde el arch
 
 Si tuvo algún error durante la instalación, realice los siguientes pasos:
 - Abra el Editor de Registro (Registry Editor) con el buscador de Windows.
-- Acceda a la ruta access the 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem'
+- Acceda a la ruta 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem'
 - Cambie el valor de la variable 'LongPathsEnabled' a 1
+- Elimine la carpeta Codigo/willac_umu_api/venv
 - Vuelva a realizar los pasos desde la instalación del virtual environment.
 
 #### Uso del API
